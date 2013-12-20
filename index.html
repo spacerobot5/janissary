@@ -3,6 +3,8 @@
 	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.0.0/annyang.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="//rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+
 
     <script>
         $(function(){
@@ -14,7 +16,11 @@
 				
                 iosocket.on('message', function(message) {
                     $('#incomingChatMessages').append($('<li></li>').text(message));
+
+					var googleTTS = new window.GoogleTTS();
+					googleTTS.play(message, "en");
                 });
+				
                 iosocket.on('disconnect', function() {
                     $('#incomingChatMessages').append('<li>Disconnected</li>');
                 });
@@ -31,7 +37,7 @@
 
 if (annyang) {
   var commands = {
-    'show me *term': function(message) {
+    'Tina *term': function(message) {
 	    iosocket.send(message);
         $('#incomingChatMessages').append($('<li></li>').text(message));
         $('#outgoingChatMessage').val('');
