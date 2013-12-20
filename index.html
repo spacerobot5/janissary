@@ -13,16 +13,19 @@
  
             iosocket.on('connect', function () {
                 $('#incomingChatMessages').append($('<li>Connected</li>'));
+					var googleTTS = new window.GoogleTTS();
+					googleTTS.play("Connected", "en");
 				
                 iosocket.on('message', function(message) {
                     $('#incomingChatMessages').append($('<li></li>').text(message));
 
-					var googleTTS = new window.GoogleTTS();
+					//var googleTTS = new window.GoogleTTS();
 					googleTTS.play(message, "en");
                 });
 				
                 iosocket.on('disconnect', function() {
                     $('#incomingChatMessages').append('<li>Disconnected</li>');
+					googleTTS.play("Disconnected", "en");
                 });
             });
  
