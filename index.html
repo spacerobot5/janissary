@@ -6,8 +6,8 @@
 
     <script>
         $(function(){
-            var iosocket = io.connect('https://localhost', {secure: true});
-			//var iosocket = io.connect('https://127.0.0.1:8080', {secure: true});
+            //var iosocket = io.connect('https://localhost', {secure: true});
+			var iosocket = io.connect('https://127.0.0.1:8080', {secure: true});
  
             iosocket.on('connect', function () {
                 $('#incomingChatMessages').append($('<li>Connected</li>'));
