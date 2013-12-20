@@ -46,7 +46,7 @@ io.sockets.on('connection', function (socket) {
 		//socket.emit('message', "You said: "+msg);
 		
 		//Broadcast to all connected sockets:
-		io.sockets.emit('message', "You said: "+msg);
+		io.sockets.emit('message', msg);
     });
 });
 

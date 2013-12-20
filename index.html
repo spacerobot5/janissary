@@ -37,7 +37,7 @@
 
 if (annyang) {
   var commands = {
-    'Tina *term': function(message) {
+    'find *term': function(message) {
 	    iosocket.send(message);
         $('#incomingChatMessages').append($('<li></li>').text(message));
         $('#outgoingChatMessage').val('');
