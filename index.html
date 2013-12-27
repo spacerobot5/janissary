@@ -21,6 +21,7 @@
 
 					//var googleTTS = new window.GoogleTTS();
 					googleTTS.play(message, "en");
+					//console.log(message);
                 });
 				
                 iosocket.on('disconnect', function() {
@@ -40,7 +41,7 @@
 
 if (annyang) {
   var commands = {
-    'find *term': function(message) {
+    'Amy *term': function(message) {
 	    iosocket.send(message);
         $('#incomingChatMessages').append($('<li></li>').text(message));
         $('#outgoingChatMessage').val('');

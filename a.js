@@ -36,6 +36,9 @@ function handler (req, res) {
 io.sockets.on('connection', function (socket) {
     socket.on('message', function (msg) {
         console.log('Message Received: ', msg);
+		
+		wolfram(msg);
+		
 		//Broadcast to all clients except for one:
         //socket.broadcast.emit('message', msg);
 
@@ -46,9 +49,86 @@ io.sockets.on('connection', function (socket) {
 		//socket.emit('message', "You said: "+msg);
 		
 		//Broadcast to all connected sockets:
-		io.sockets.emit('message', msg);
+		//io.sockets.emit('message', msg);
     });
 });
+
+
+
+
+
+
+
+
+
+
+function wolfram(request){
+	var Client = require('node-wolfram');
+	var Wolfram = new Client('4LKTW8-3XR8HU4LKU');
+	Wolfram.query(request, function(err, result) {
+		if(err)
+			console.log(err);
+		else
+		{
+			for(var a=0; a<result.queryresult.pod.length; a++)
+			{
+				var pod = result.queryresult.pod[a];
+				console.log(pod.$.title,": ");
+				for(var b=0; b<pod.subpod.length; b++)
+				{
+					var subpod = pod.subpod[b];
+					for(var c=0; c<subpod.plaintext.length; c++)
+					{
+						var text = subpod.plaintext[c];
+						console.log('\t', text);
+					}
+				}
+			}
+			io.sockets.emit('message', result.queryresult.pod[1].subpod[0].plaintext[0]);
+			//return text;
+		}
+	});
+}
+
+
+
+
+
+
+
+
+
+
+/*
+var Client = require('node-wolfram');
+var Wolfram = new Client('4LKTW8-3XR8HU4LKU');
+Wolfram.query("What day is it today?", function(err, result) {
+    if(err)
+        console.log(err);
+    else
+    {
+        for(var a=0; a<result.queryresult.pod.length; a++)
+        {
+            var pod = result.queryresult.pod[a];
+            console.log(pod.$.title,": ");
+            for(var b=0; b<pod.subpod.length; b++)
+            {
+                var subpod = pod.subpod[b];
+                for(var c=0; c<subpod.plaintext.length; c++)
+                {
+                    var text = subpod.plaintext[c];
+                    console.log('\t', text);
+                }
+            }
+        }
+    }
+});
+*/
+
+
+
+
+
 
 
 /*
