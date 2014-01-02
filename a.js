@@ -38,54 +38,8 @@ io.sockets.on('connection', function (socket) {
         console.log('Message Received: ', msg);
 		
 		wolfram(msg);
-		
-		//Broadcast to all clients except for one:
-        //socket.broadcast.emit('message', msg);
 
-		//Broadcast to all clients in a room:
-		//io.sockets.in('room').emit('message', msg);
-		
-		//Sending a message to a single client:
-		//socket.emit('message', "You said: "+msg);
-		
-		//Broadcast to all connected sockets:
-		//io.sockets.emit('message', msg);
-    });
-});
 
-/*
-var chromecast = require('chromecast')();
-
-chromecast.on('device', function(device){
-
-  device.launch('YouTube', {
-    v: 'jG2KMkQLZmI'
-  }).then(function(){
-    console.log('Watch Your TV!');
-  }, function(err){
-    console.error('Something Went Wrong: ', err);
-  });
-
-});
-
-chromecast.discover();
-*/
-
-var chromecast = require('chromecast')();
-
-chromecast.on('device', function(device){
-
-  device.launch('YouTube', {
-    v: 'jG2KMkQLZmI'
-  }).then(function(){
-    console.log('Watch Your TV!');
-  }, function(err){
-    console.error('Something Went Wrong: ', err);
-  });
-
-});
-
-chromecast.discover();
 
 
 
@@ -115,11 +69,85 @@ function wolfram(request){
 					}
 				}
 			}
-			io.sockets.emit('message', result.queryresult.pod[1].subpod[0].plaintext[0]);
-			//return text;
+			//io.sockets.emit('message', result.queryresult.pod[1].subpod[0].plaintext[0]);
+			sendresponse(result.queryresult.pod[1].subpod[0].plaintext[0],"single");
 		}
 	});
 }
+
+
+function sendresponse(response,client){
+	if(typeof(client)==='undefined') client = "all";
+
+	if (client=="single"){
+		socket.emit('message', response);
+	}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		
+
+
+		
+		//Broadcast to all clients except for one:
+        //socket.broadcast.emit('message', msg);
+
+		//Broadcast to all clients in a room:
+		//io.sockets.in('room').emit('message', msg);
+		
+		//Sending a message to a single client:
+		//socket.emit('message', "You said: "+msg);
+		
+		//Broadcast to all connected sockets:
+		//io.sockets.emit('message', msg);
+    });
+});
+
+/*
+//Send Youtube video to Chromecast
+
+var chromecast = require('chromecast')();
+
+chromecast.on('device', function(device){
+
+  device.launch('YouTube', {
+    v: 'jG2KMkQLZmI'
+  }).then(function(){
+    console.log('Watch Your TV!');
+  }, function(err){
+    console.error('Something Went Wrong: ', err);
+  });
+
+});
+
+chromecast.discover();
+*/
+
+
+
+
+
 
 
 
@@ -154,39 +182,4 @@ Wolfram.query("What day is it today?", function(err, result) {
         }
     }
 });
-*/
-
-
-
-
-
-
-
-/*
-var app = require('https').createServer(handler)
-  , io = require('socket.io').listen(app)
-  , fs = require('fs')
-
-app.listen(80);
-
-function handler (req, res) {
-  fs.readFile(__dirname + '/index.html',
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-
-    res.writeHead(200);
-    res.end(data);
-  });
-}
-
-io.sockets.on('connection', function (socket) {
-    socket.on('message', function (msg) {
-        console.log('Message Received: ', msg);
-        socket.broadcast.emit('message', msg);
-    });
-});
-
 */
