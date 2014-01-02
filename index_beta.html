@@ -1,0 +1,87 @@
+<html>
+<head>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.0.0/annyang.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="//rawgithub.com/hiddentao/google-tts/master/google-tts.min.js"></script>
+
+    <script>
+        $(function(){
+            //var iosocket = io.connect('https://localhost', {secure: true});
+			var iosocket = io.connect('https://127.0.0.1:8080', {secure: true});
+ 
+            iosocket.on('connect', function () {
+                $('#incomingChatMessages').append($('<li>Connected</li>'));
+					var googleTTS = new window.GoogleTTS();
+					googleTTS.play("Connected", "en");
+
+			if(typeof(Storage)!=="undefined"){
+				if(localStorage.client=="undefined"){
+					$('#incomingChatMessages').append($('<li>What client are you connecting with?</li>'));
+						localStorage.response = "What client are you connecting with?";
+						googleTTS.play("What client are you connecting with?", "en");
+				}
+			}
+			else{
+				console.log("You need HTML local storage capabilities for this to function.");
+			}
+
+
+
+
+
+
+					
+                iosocket.on('message', function(message) {
+                    $('#incomingChatMessages').append($('<li></li>').text(message));
+
+					//var googleTTS = new window.GoogleTTS();
+					googleTTS.play(message, "en");
+					//console.log(message);
+                });
+				
+                iosocket.on('disconnect', function() {
+                    $('#incomingChatMessages').append('<li>Disconnected</li>');
+					googleTTS.play("Disconnected", "en");
+                });
+            });
+ 
+            $('#outgoingChatMessage').keypress(function(event) {
+                if(event.which == 13) {
+                    event.preventDefault();
+                    iosocket.send($('#outgoingChatMessage').val());
+                    $('#incomingChatMessages').append($('<li></li>').text($('#outgoingChatMessage').val()));
+                    $('#outgoingChatMessage').val('');
+                }
+            });
+
+if (annyang) {
+  var commands = {
+    'Amy *term': function(message) {
+	    iosocket.send(message);
+        $('#incomingChatMessages').append($('<li></li>').text(message));
+        $('#outgoingChatMessage').val('');
+    }
+  };
+
+  // Initialize annyang with our commands
+  annyang.init(commands);
+
+  // Start listening. You can call this here, or attach this call to an event, button, etc.
+  annyang.start();
+}
+
+
+
+
+			
+        });
+    </script>
+</head>
+<body>
+Incoming Chat:&nbsp;<ul id="incomingChatMessages"></ul>
+
+
+<input type="text" id="outgoingChatMessage">
+</body>
+</html>

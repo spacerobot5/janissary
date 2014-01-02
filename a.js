@@ -53,8 +53,39 @@ io.sockets.on('connection', function (socket) {
     });
 });
 
+/*
+var chromecast = require('chromecast')();
 
+chromecast.on('device', function(device){
 
+  device.launch('YouTube', {
+    v: 'jG2KMkQLZmI'
+  }).then(function(){
+    console.log('Watch Your TV!');
+  }, function(err){
+    console.error('Something Went Wrong: ', err);
+  });
+
+});
+
+chromecast.discover();
+*/
+
+var chromecast = require('chromecast')();
+
+chromecast.on('device', function(device){
+
+  device.launch('YouTube', {
+    v: 'jG2KMkQLZmI'
+  }).then(function(){
+    console.log('Watch Your TV!');
+  }, function(err){
+    console.error('Something Went Wrong: ', err);
+  });
+
+});
+
+chromecast.discover();
 
 
 
