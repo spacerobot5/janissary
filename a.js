@@ -17,6 +17,23 @@ httpapp.get('*',function(req,res){
     res.redirect('https://127.0.0.1:8080'+req.url)
 })
 
+/*
+var open = require('open');
+open('C:\firefox.exe');
+*/
+
+var open = require('open');
+var exepath = "C:\\Program\ Files\ (x86)\\Mozilla\ Firefox\\firefox.exe";
+//var programpath = "C:\Program Files (x86)\Mozilla Firefox\firefox.exe";
+
+console.log(exepath);
+open(exepath);
+//open('C:\Program Files (x86)\Mozilla Firefox\firefox.exe');
+
+
+
+
+
 server.listen(8080);
 http.listen(80);
 
